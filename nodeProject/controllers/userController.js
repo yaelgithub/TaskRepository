@@ -17,31 +17,16 @@ const signUp=(req,res)=>{
 
 const login=(req,res)=>{
     console.log('login');
-    const {email,password}=req.query
-    //console.log(email+password);
-    // const checkToken=jwt.verify(req.headers['authorization'],process.env.SECRET,function (err, decoded) {
-    //     if (err) throw err;
-    //     console.log(decoded);
-    //     })
-        
-    User.find({email:email,password:password})
+    const {email,password}=req.query       
+    User.findOne({email:email,password:password})
     .then(user=>{
-        //res.send(user)       
-        // if(!(user.token===checkToken))
-        // return console.error('error- the user not connected');
-
         res.status(200).json({user})
     })
     .catch(()=>{res.status(401).send('error in connect user')})
 }
 
-// const SetList=(req,res)=>{
-//     console.log('set work');
-// }
-
 
 module.exports={
-    // SetList
     signUp,
     login
 }

@@ -1,22 +1,29 @@
 import axios from 'axios'
 
 
-export function GetTasks( email, password) {
+export async function GetTasks( userId,token) {
+    const axios = require('axios');
+    const data = JSON.stringify({"token":token});
     var config = {
         method: 'get',
-        url: 'localhost:4000/task/getTasks',
+        url: `http://localhost:4000/task/getTasks/${userId}`,
         headers: { 
-          'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFAZ21haWwuY29tIiwicGFzc3dvcmQiOiIxMjM0NTYiLCJpYXQiOjE2MTU5MTg5MzV9.q2apPwbOnSa5_Lsh9L3_k9U0XMNdzTDD_wDqRh3gkjo'
-        }
+          'Authorization': token
+        },
+        data:data
       };
-      
-      axios(config)
+      //JSON.stringify(response.data)
+    const result=await axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        console.log('from server '+JSON.stringify(response.data));
+        return response.data.tasks
       })
       .catch(function (error) {
         console.log(error);
-  })}
+        return error
+  })
+  return result
+}
 
 //req=> userId,token,title,isCompleted
 //res=> 

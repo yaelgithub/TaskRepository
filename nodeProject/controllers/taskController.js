@@ -15,8 +15,9 @@ const addTask=(req,res)=>{
     .catch(err=>{res.status(400).json({message:'not add task'})})
 }
 const getTasks=(req,res)=>{
-    Task.find()
-    .then(tasks=>{res.status(200).json(tasks)})
+    console.log('get tasks');
+    User.findById(req.params.userId).populate('tasks','title completed')
+    .then(user=>{res.status(200).json(user)})
     .catch(err=>{res.status(404).send('not found tasks')})
 }
 const deleteTask=async(req,res)=>{

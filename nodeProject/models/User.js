@@ -33,20 +33,20 @@ const userSchema=mongoose.Schema({
     }]
 })
 
-// userSchema.post('save',(next)=>{
-//     var mailOptions = {
-//         from: this.email,
-//         to: email,
-//         subject: 'wellcom',
-//         text: `hello ${this.name}`
-//     };  
-//     transporter.sendMail(mailOptions, function (error, info) {
-//         if (error) {
-//             console.log(error);
-//         } else {
-//             console.log('Email sent: ' + info.response);
-//         }
-//     });
-// })
+userSchema.post('save',(next)=>{
+    var mailOptions = {
+        from: this.email,
+        to: email,
+        subject: 'wellcom',
+        text: `hello ${this.name}`
+    };  
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+})
 
 module.exports=mongoose.model('User',userSchema)

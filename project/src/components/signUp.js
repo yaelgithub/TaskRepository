@@ -1,24 +1,9 @@
 import React, { useRef} from 'react';
-import {connect} from 'react-redux'
-import {actions} from '../Store/actions'
 import {SignUpServer} from '../connectToServer/userConnect'
 import {Link,withRouter} from 'react-router-dom'
 
-// function mapStateToProps(state){
-//     return{
-//         user:state.user       
-//     }
-//   }
-  
-//   const mapDispatchToProps=(dispatch)=>({   
-//     setName:(name)=>{dispatch(actions.setName(name))},
-//     setEmail:(email)=>{dispatch(actions.setEmail(email))},
-//     setPassword:(password)=>{dispatch(actions.setPassword(password))}
-    
-//   })
-
 export default withRouter(function SignUp (props) {
-    // const {user,setName,setEmail,setPassword}=props
+
     const nameRef=useRef('')
     const emailRef=useRef('')
     const passwordRef=useRef('')

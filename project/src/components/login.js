@@ -1,34 +1,15 @@
 import React, { useRef } from "react";
-// import {connect} from 'react-redux'
-import { Link, Redirect } from "react-router-dom";
-// import {actions} from '../Store/actions'
-import { withRouter, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import {logInServer} from '../connectToServer/userConnect'
 
-// function mapStateToProps(state){
-//   return{
-//       user:state.user       
-//   }
-// }
-
-// const mapDispatchToProps=(dispatch)=>({                                       
-//   setEmail:(email)=>{dispatch(actions.setEmail(email))},
-//   setPassword:(password)=>{dispatch(actions.setPassword(password))}
-  
-// })
-/////////////////////////////////////
-//connect(mapStateToProps,mapDispatchToProps)
-
 export default withRouter( function  Login (props) {
-
-    //const {user,setEmail,setPassword}=props
-    //const history=useHistory()//onSubmit={history.push( "/task/getTasks ")}
 
     const emailRef=useRef('')
     const passwordRef=useRef('')
     const setStoreUser = props.setStoreUser
 
-    //מקבל את נותני המשמתש החדש ומעביר לפונקציית סרבר
+    //מקבל את נתוני המשמתש החדש ומעביר לפונקציית סרבר
     async function req() {
       if (emailRef.current.value != '' && passwordRef.current.value != '') {
           const res = await logInServer(emailRef.current.value, passwordRef.current.value)
