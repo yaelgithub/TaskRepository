@@ -1,5 +1,32 @@
 const User=require('../models/User')
-const jwt=require('jsonwebtoken')
+const jwt=require('jsonwebtoken');
+const nodemailer= require('nodemailer')
+
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.MY_EMAIL,
+        pass: process.env.MY_PASSWORD_EMAIL
+    }
+});
+function sendMail(user){
+    console.log('send mail')
+    var mailOptions = {
+        from: process.env.MY_EMAIL,
+        to: user.email,
+        subject: 'wellcom', 
+        text: `hello ${user.name} use in fun!!`
+    };  
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+            return error
+        } else {
+            console.log('Email sent: ' + info.response);
+        } 
+    });
+}
+   
 
 
 const signUp=(req,res)=>{
@@ -10,7 +37,9 @@ const signUp=(req,res)=>{
         const newUser=new User(req.body)      
         newUser.token=token
         console.log(newUser);
-        newUser.save().then(user=>res.status(200).json({user:user}))
+        newUser.save().then(user=>{
+            sendMail(user)
+            res.status(200).json(user)})
         .catch((err)=>{res.status(400).send('user not sign up'+err)})
 
 }

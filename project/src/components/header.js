@@ -2,7 +2,6 @@ import React from "react";
 import { Link, Switch, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { actions } from "../Store/actions";
-// import userReducer from '../Store/Reducers/User'
 import { withRouter, Redirect } from "react-router-dom";
 import Login from "./login";
 import SignUp from "./signUp";
@@ -19,11 +18,7 @@ const mapDispatchToProps = (dispatch) => ({
   setStoreUser: (data) => dispatch(actions.setStoreUser(data)),
 });
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(function Header(props) {
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(function Header(props) {
     const { user, setStoreUser } = props;
 
     return (
@@ -78,7 +73,7 @@ export default withRouter(
                 </Link>
               </li>
               {user.token ? (
-                <li className="nav-item col-2">Hellow {user.name}</li>
+                <li className="nav-item col-2">Hello {user.name}</li>
               ) : (
                 ""
               )}
@@ -94,15 +89,14 @@ export default withRouter(
             <SignUp></SignUp>
           </Route>
           <Route path="/task/addTask">
-            {user.token != "" ? (
+            {user.token !== "" ? (
               <AddTask user={user}></AddTask>
             ) : (
-              //console.log(user)
               <Redirect to="/user/login" />
             )}
           </Route>
           <Route path="/task/getTasks">
-            {user.token != "" ? (
+            {user.token !== "" ? (
               <DisplayTasks user={user}></DisplayTasks>
             ) : (
               <Redirect to="/user/login" />

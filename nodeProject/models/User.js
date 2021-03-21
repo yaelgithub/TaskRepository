@@ -1,13 +1,13 @@
 const mongoose= require('mongoose')
-const nodemailer= require('nodemailer')
+// const nodemailer= require('nodemailer')
 
-var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.MY_EMAIL,
-        pass: process.env.MY_PASSWORD_EMAIL
-    }
-});
+// var transporter = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//         user: process.env.MY_EMAIL,
+//         pass: process.env.MY_PASSWORD_EMAIL
+//     }
+// });
 
 const userSchema=mongoose.Schema({
     //_id:{type:mongoose.Types.ObjectId},
@@ -33,20 +33,24 @@ const userSchema=mongoose.Schema({
     }]
 })
 
-userSchema.post('save',(next)=>{
-    var mailOptions = {
-        from: this.email,
-        to: email,
-        subject: 'wellcom',
-        text: `hello ${this.name}`
-    };  
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
-    });
-})
+// userSchema.post('save',(error, doc, next)=>{
+//     console.log('send mail');
+//     var mailOptions = {
+//         from: process.env.MY_EMAIL,
+//         to: this.email,
+//         subject: 'wellcom', 
+//         text: `hello ${this.name}`
+//     };  
+//     transporter.sendMail(mailOptions, function (error, info) {
+//         if (error) {
+//             console.log(error);
+//             return error
+//         } else {
+//             console.log('Email sent: ' + info.response);
+//             return  next()
+//         } 
+//     });
+   
+// })
 
 module.exports=mongoose.model('User',userSchema)
