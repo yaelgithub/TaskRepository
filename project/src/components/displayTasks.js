@@ -1,50 +1,65 @@
-import React, { useState,useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DeleteTask, GetTasks } from '../connectToServer/taskConnect';
 import {UpdateTask} from '../connectToServer/taskConnect'
 
 
 
 export default function  DisplayTasks(props) {
-    // const [index,setInsex]=useState(1)
-    const [items,setItems]=useState([])
-    const titleRef=useRef('')
-    const checkedRef=useRef(false)
-    // const [checked,setChecked]=useState(false)
-    const {user}=props
+  const {user}=props
 
-    // useEffect(async()=>{
-    //   const res=await GetTasks(user._id,user.token)
-    //    await setItems(res)
-    //    console.log(' useEffect',items);
-    // },[])
+    // const [index,setInsex]=useState(1)
+    const [tasksList,setTasksList]=useState([{}])
+
+    // const [checked,setChecked]=useState(false)
+    
+    useEffect(async()=>{  
+      const res=await GetTasks(user._id,user.token)
+      if (res.status == 200) {
+        console.log(res.data.tasks);
+        await setTasksList(() => res.data.tasks)
+    }
+    },[])
 
     async function reqUpdate() {
-      if (titleRef.current.value != user.title || checkedRef.current.value != user.complected) {
-          const res = await UpdateTask(user._id,user.token,titleRef.current.value, checkedRef.current.value)
-          console.log('from componnent:', res);
-          if (res.status === 200) {
-             // await setStoreUser(res.data)
-             alert('task update successfuly')
-              return props.history.push('/task/getTasks')
-          }
-          else alert('error ' + res.response.data)//נסה שנית או הרשמה
-      }
-      else alert('enter email & password')
+    //   if (titleRef.current.value != user.title || checkedRef.current.value != user.complected) {
+    //       const res = await UpdateTask(user._id,user.token,titleRef.current.value, checkedRef.current.value)
+    //       console.log('from componnent:', res);
+    //       if (res.status === 200) {
+    //          // await setStoreUser(res.data)
+    //          alert('task update successfuly')
+    //           return props.history.push('/task/getTasks')
+    //       }
+    //       else alert('error ' + res.response.data)//נסה שנית או הרשמה
+    //   }
+    //   else alert('enter email & password')
   }
-  async function reqDel(){
-
+  function Remove(taskId){ 
+      const newList = tasksList.filter((item) => item._id !== taskId);
+      setTasksList(newList);
+  
   }
+  async function deleteTask(taskId) {
+    console.log(taskId);
+    const res = await DeleteTask(taskId, user.token)
+    if (res.status == 200) {
+        alert('success')
+        Remove(taskId)
+    }
+    else {
+        alert("faild!" + res.response.data.toString())
+    }
+}
 
 return (
 
-<div >
+<div className="container-fluid mt-5">
 
-<div className="modal" tabIndex={-1} role="dialog">
-  <div className="modal-dialog" role="document">
+<div className="modal" tabIndex={-1} role={"dialog"}>
+  <div className="modal-dialog" role={"document"}>
     <div className="modal-content">
       <div className="modal-header">
         <h5 className="modal-title">Modal title</h5>
-        <button type="button" className="close" data-dismiss="modal" aria-label={"Close"}>
+        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
